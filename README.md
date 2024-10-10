@@ -1,4 +1,7 @@
 # Movie Search Demo Project
+---
+
+Visit the website here: https://stephieliu.github.io/movie_search_demo_project
 
 Project was inspired and based off the following tutorials:
 - https://www.youtube.com/watch?v=b9eMGE7QtTk
