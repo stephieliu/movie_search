@@ -1,19 +1,31 @@
 import React from 'react';
-import {useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import './App.css'; // Applies the css style to the webpage
 import SearchIcon from './search.svg';
-
+import MovieCard from './MovieCard';
 // api key containing movie information
 const API_URL = 'http://www.omdbapi.com?apikey=ebe37347';
 
-const movie1 = {
-    "Poster": "https://m.media-amazon.com/images/M/MV5BZWQxMjcwNjItZjI0ZC00ZTc4LWIwMzItM2Q0YTZhNzI3NzdlXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_SX300.jpg",
-    "Title": "Italian Spiderman",
-    "Type": "movie",
-    "Year": "2007",
-    "imdbID": "tt2705436"
-}
+// const movie1 = {
+//     "Poster": "https://m.media-amazon.com/images/M/MV5BZWQxMjcwNjItZjI0ZC00ZTc4LWIwMzItM2Q0YTZhNzI3NzdlXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_SX300.jpg",
+//     "Title": "Italian Spiderman",
+//     "Type": "movie",
+//     "Year": "2007",
+//     "imdbID": "tt2705436"
+// }
+
 const App = () => {
+
+    const [movies, setMovies] = useState([]);
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Personal addition: on Enter key press, also trigger search event
+    const handleKeyPress=(event) => {
+        if(event.key==='Enter'){
+            searchMovies(searchTerm);
+        }
+    }
 
     const searchMovies = async (title) => {
         // Call the api:
@@ -21,12 +33,16 @@ const App = () => {
         const data = await response.json();
 
         // Can check data using console (inspect webpage)
-        console.log(data.Search);
+        // console.log(data.Search);
+
+        // Pass data into setMovies state
+        setMovies(data.Search);
     }
 
     useEffect(() => {
-        searchMovies('Spiderman');
+        searchMovies('');
     }, []);
+
     return(
         <div className="app">
             <h1>MovieLand</h1>
@@ -35,36 +51,37 @@ const App = () => {
                 <input
                     placeholder="search for movies"
                     // Can statically set a value (can no longer search anything)
-                    value="Superman"
+                    // value="Superman"
+
+                    // Dynamically set a search
+                    value={searchTerm}
+
                     // onChange allows you to actually modify the value
-                    onChange={() => {}}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyUp={handleKeyPress}
                 />
                 <img
                     src = {SearchIcon}
                     alt = "search icon"
-                    onClick={() =>{}}
+                    onClick={() =>searchMovies(searchTerm)}
                 />
             </div>
 
-            <div className="container">
-            <div className="movie">
-                <div>
-                    <p>{movie1.Year}</p>
-                </div>
+            {movies?.length > 0?(
+                <div className="container">
+                    {/* Shows a single movie */}
+                    {/* <MovieCard movie1={movie1}/> */}
 
-                <div>
-                    <img
-                        src={movie1.Poster !== 'N/A'? movie1.Poster: 'https://placeholder.com/400'}
-                        alt={movie1.Title}
-                    />
+                    {/* Open a dynamic block of code: */}
+                    {movies.map((movie)=>(
+                        <MovieCard movie={movie} />
+                    ))}
                 </div>
-
-                <div>
-                    <span>{movie1.Type}</span>
-                    <h3>{movie1.Title}</h3>
+            ):(
+                <div className="empty">
+                    <h2>No movies found.</h2>
                 </div>
-            </div>
-            </div>
+            )}
         </div>
     );
 }
