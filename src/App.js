@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import './App.css'; // Applies the css style to the webpage
-import SearchIcon from './search.svg';
+import SearchIcon from './search.svg'; 
 import MovieCard from './MovieCard';
 // api key containing movie information
 const API_URL = 'http://www.omdbapi.com?apikey=ebe37347';
@@ -39,13 +39,14 @@ const App = () => {
         setMovies(data.Search);
     }
 
+    // Initially, we want the search to be empty
     useEffect(() => {
         searchMovies('');
     }, []);
 
     return(
         <div className="app">
-            <h1>MovieLand</h1>
+            <h1>Movie Search</h1>
 
             <div className="search">
                 <input
