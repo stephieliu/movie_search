@@ -1,4 +1,4 @@
-# Movie Search Demo Project
+# Movie Search (React JS Project)
 
 ### Visit the website here: https://stephieliu.github.io/movie_search_demo_project
 
